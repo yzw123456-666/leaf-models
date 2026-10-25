@@ -1,0 +1,21 @@
+FROM ./tinyllm-ft-q8_0.gguf
+
+# 小强 Xiaoqiang-26M (小而强) — MiniMind2-Small 继续训练版
+# 用法: ollama create xiaoqiang -f Modelfile && ollama run tinyllm
+
+TEMPLATE """{{- if .System }}<|im_start|>system
+{{ .System }}<|im_end|>
+{{ end }}{{- range .Messages }}<|im_start|>{{ .Role }}
+{{ .Content }}<|im_end|>
+{{ end }}<|im_start|>assistant
+"""
+
+SYSTEM """You are a helpful assistant"""
+
+PARAMETER stop "<|im_start|>"
+PARAMETER stop "<|im_end|>"
+PARAMETER temperature 0.6
+PARAMETER top_k 32
+PARAMETER top_p 0.9
+PARAMETER repeat_penalty 1.1
+PARAMETER num_ctx 512
